@@ -141,7 +141,7 @@ module Brcobranca
         def monta_segmento_p(pagamento, nro_lote, sequencial)
           segmento_p = ''
           #                                                             # DESCRICAO                             TAMANHO
-          segmento_p += cod_banco # codigo banco                          3
+          segmento_p += cod_banco                                       # codigo banco                          3
           segmento_p << nro_lote.to_s.rjust(4, '0')                     # lote de servico                       4
           segmento_p << '3'                                             # tipo de registro                      1
           segmento_p << sequencial.to_s.rjust(5, '0')                   # num. sequencial do registro no lote   5
@@ -160,7 +160,7 @@ module Brcobranca
           segmento_p << pagamento.data_vencimento.strftime('%d%m%Y')    # data de venc.                         8
           segmento_p << pagamento.formata_valor(15)                     # valor documento                       15
           segmento_p << ''.rjust(5, '0')                                # agencia cobradora                     5
-          segmento_p << dv_agencia_cobradora                            # dv agencia cobradora                  1
+          segmento_p << dv_agencia_cobradora                            # dv agencia cobradora                  1       ok
           segmento_p << especie_titulo                                  # especie do titulo                     2
           segmento_p << aceite                                          # aceite                                1
           segmento_p << pagamento.data_emissao.strftime('%d%m%Y')       # data de emissao titulo                8
@@ -177,9 +177,8 @@ module Brcobranca
           segmento_p << pagamento.dias_protesto.to_s.rjust(2, '0')      # dias para protesto                    2
           segmento_p << codigo_baixa(pagamento)                         # cod. para baixa                       1
           segmento_p << dias_baixa(pagamento)                           # dias para baixa                       2
-          segmento_p << '09'                                            # cod. da moeda                         2
-          segmento_p << ''.rjust(10, '0')                               # uso exclusivo                         10
-          segmento_p << ' '                                             # uso exclusivo                         1
+          segmento_p << codigo_moeda                                    # cod. da moeda                         2
+          segmento_p << uso_exclusivo_banco_p                           # uso exclusivo                         11
           segmento_p
         end
 
@@ -215,9 +214,7 @@ module Brcobranca
           segmento_q << pagamento.identificacao_avalista(false)         # identificacao do sacador             1
           segmento_q << pagamento.documento_avalista.to_s.rjust(15, '0') # documento sacador                    15
           segmento_q << pagamento.nome_avalista.format_size(40)         # nome avalista                        40
-          segmento_q << ''.rjust(3, '0')                                # cod. banco correspondente            3
-          segmento_q << ''.rjust(20, ' ')                               # nosso numero banco correspondente    20
-          segmento_q << ''.rjust(8, ' ')                                # uso exclusivo                        8
+          segmento_q << uso_exclusivo_banco_q
           segmento_q
         end
 
@@ -242,11 +239,11 @@ module Brcobranca
           segmento_r << ' '                                             # uso exclusivo                        1
           segmento_r << pagamento.identificacao_ocorrencia              # cod. movimento remessa               2
           segmento_r << '0'                                             # cod. desconto 2                      1
-          segmento_r << ''.rjust(8, '0')                               # data desconto 2                      8
-          segmento_r << ''.rjust(15, '0')                              # valor desconto 2                     15
-          segmento_r << '0' # cod. desconto 3                      1
-          segmento_r << ''.rjust(8, '0')                               # data desconto 3                      8
-          segmento_r << ''.rjust(15, '0')                              # valor desconto 3                     15
+          segmento_r << ''.rjust(8, '0')                                # data desconto 2                      8
+          segmento_r << ''.rjust(15, '0')                               # valor desconto 2                     15
+          segmento_r << '0'                                             # cod. desconto 3                      1
+          segmento_r << ''.rjust(8, '0')                                # data desconto 3                      8
+          segmento_r << ''.rjust(15, '0')                               # valor desconto 3                     15
           segmento_r << pagamento.codigo_multa                          # codigo multa                         1
           segmento_r << data_multa(pagamento)                           # data multa                           8
           segmento_r << pagamento.formata_percentual_multa(15)          # valor multa                          15
@@ -522,6 +519,24 @@ module Brcobranca
 
         def dv_agencia_cobradora
           '0'
+        end
+        
+        # customização para o santander. Seu codigo moeda "real" = 00
+        def codigo_moeda
+          '09'
+        end
+        
+        def uso_exclusivo_banco_p
+          segmento = ''.rjust(10, '0')                          # uso exclusivo                         10
+          segmento += ' '                                       # uso exclusivo                         1
+          segmento
+        end
+        
+        def uso_exclusivo_banco_q
+          segmento =  ''.rjust(3, '0')                          # cod. banco correspondente            3
+          segmento += ''.rjust(20, ' ')                         # nosso numero banco correspondente    20
+          segmento << ''.rjust(8, ' ')                          # uso exclusivo                        8
+          segmento
         end
       end
     end

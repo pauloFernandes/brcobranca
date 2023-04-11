@@ -39,6 +39,8 @@ module Brcobranca
       attr_accessor :cod_primeira_instrucao
       # <b>OPCIONAL</b>: codigo da 2a instrucao
       attr_accessor :cod_segunda_instrucao
+      # <b>OPCIONAL</b>: prazo em dias das instruções de cobrança
+      attr_accessor :prazo_instrucao
       # <b>OPCIONAL</b>: valor da mora ao dia
       attr_accessor :valor_mora
       # <b>OPCIONAL</b>: data limite para o desconto
@@ -129,7 +131,8 @@ module Brcobranca
           codigo_baixa: '0',
           dias_baixa: '000',
           cod_primeira_instrucao: '00',
-          cod_segunda_instrucao: '00'
+          cod_segunda_instrucao: '00',
+          prazo_instrucao: '03',
         }
 
         campos = padrao.merge!(campos)

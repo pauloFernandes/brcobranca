@@ -108,8 +108,8 @@ module Brcobranca
           detalhe << '01'                                             # especie do titulo                           9[02]       148 a 149
           detalhe << 'N'                                              # identificacao (sempre N)                    X[01]       150 a 150
           detalhe << pagamento.data_emissao.strftime('%d%m%y')        # data de emissao                             9[06]       151 a 156
-          detalhe << ''.rjust(2, '0')                                 # 1a instrucao                                9[02]       157 a 158
-          detalhe << ''.rjust(2, '0')                                 # 2a instrucao                                9[02]       159 a 160
+          detalhe << monta_primeira_instrucao(pagamento)              # 1a instrucao                                9[02]       157 a 158
+          detalhe << monta_segunda_instrucao(pagamento)               # 2a instrucao                                9[02]       159 a 160
           detalhe << pagamento.formata_valor_mora                     # mora                                        9[13]       161 a 173
           detalhe << pagamento.formata_data_desconto                  # data desconto                               9[06]       174 a 179
           detalhe << pagamento.formata_valor_desconto                 # valor desconto                              9[13]       180 a 192
@@ -125,6 +125,30 @@ module Brcobranca
           detalhe << ''.rjust(60, ' ')                                # sacador/2a mensagem - verificar             X[60]       335 a 394
           detalhe << sequencial.to_s.rjust(6, '0')                    # numero do registro do arquivo               9[06]       395 a 400
           detalhe
+        end
+
+        def monta_primeira_instrucao(pagamento)
+          return pagamento.cod_primeira_instrucao unless pagamento.cod_primeira_instrucao.blank?
+
+          return ''.rjust(2, '0')
+        end
+
+        def monta_segunda_instrucao(pagamento)
+          # 05: protesto falimentar
+          # 06: negativar
+          # 07: protestar
+          if pagamento.cod_primeira_instrucao == '05' || pagamento.cod_primeira_instrucao == '06' || pagamento.cod_primeira_instrucao == '07'
+            # quantidade de dias (mínimo 5)
+            return pagamento.dias_protesto.to_s.rjust(2, '0') if pagamento.dias_protesto > 5
+            return '05'
+          end
+
+          # 18: baixa por decurso de prazo
+          if pagamento.cod_primeira_instrucao == '18'
+            return pagamento.prazo_instrucao.to_s.rjust(2, '0')
+          end
+
+          return ''.rjust(2, '0')
         end
 
         def monta_descontos_adicionais(pagamento, sequencial)

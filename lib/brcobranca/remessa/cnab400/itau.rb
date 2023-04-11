@@ -132,7 +132,7 @@ module Brcobranca
           detalhe << pagamento.uf_sacado                                    # uf do pagador                         X[02]
           detalhe << pagamento.nome_avalista.format_size(30)                # nome do sacador/avalista              X[30]
           detalhe << ''.rjust(4, ' ')                                       # complemento do registro               X[04]
-          detalhe << ''.rjust(6, '0')                                       # data da mora                          9[06] *
+          detalhe << data_mora_formatada(pagamento)                         # data da mora                          9[06] *
           detalhe << prazo_instrucao(pagamento)                             # prazo para a instrução          9[02]
           detalhe << ''.rjust(1, ' ')                                       # complemento do registro (brancos)     X[01]
           detalhe << sequencial.to_s.rjust(6, '0')                          # numero do registro no arquivo         9[06]
@@ -140,9 +140,17 @@ module Brcobranca
         end
 
         def prazo_instrucao(pagamento)
-          return '03' unless pagamento.cod_primeira_instrucao == '09'
+          if pagamento.cod_primeira_instrucao == '09'
+            return pagamento.dias_protesto.rjust(2, '0')
+          end
+          
+          pagamento.prazo_instrucao.rjust(2, '0')
+        end
 
-          pagamento.dias_protesto.rjust(2, '0')
+        def data_mora_formatada(pagamento)
+          return pagamento.data_mora.strftime('%d%m%y') if pagamento.data_mora
+
+          ''.rjust(6, '0')
         end
 
         def monta_detalhe_multa(pagamento, sequencial)
