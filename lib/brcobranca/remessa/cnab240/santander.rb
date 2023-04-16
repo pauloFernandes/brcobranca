@@ -84,7 +84,6 @@ module Brcobranca
           header_lote << sequencial_remessa.to_s.rjust(8, '0')  # numero remessa          8
           header_lote << data_geracao                           # data gravacao           8
           header_lote << ''.rjust(41, ' ')                      # complemento             33
-          header_lote << '.'
 
           header_lote
         end
@@ -183,7 +182,6 @@ module Brcobranca
           trailer_arquivo << nro_lotes.to_s.rjust(6, '0')                  # qtde de registros lote  6
           trailer_arquivo << sequencial.to_s.rjust(6, '0')                 # qtde de registros lote  6
           trailer_arquivo << ''.rjust(211, ' ')                            # uso exclusivo           211
-          trailer_arquivo << '.'
           trailer_arquivo
         end
 
