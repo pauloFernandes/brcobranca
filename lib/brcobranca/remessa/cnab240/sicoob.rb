@@ -98,8 +98,18 @@ module Brcobranca
           # digito agencia         1
           # conta corrente         12
           # digito conta           1
-          # digito agencia/conta   1
+          # digito agencia/conta   1                            para o header do arquivo, o DV é 0 (zero)
           "#{agencia.rjust(5, '0')}#{digito_agencia}#{conta_corrente.rjust(12, '0')}#{digito_conta}0"
+        end
+
+        def info_conta_lote
+          # CAMPO                  TAMANHO
+          # agencia                5
+          # digito agencia         1
+          # conta corrente         12
+          # digito conta           1
+          # digito agencia/conta   1                            para o header do lote, o DV é vazio
+          "#{agencia.rjust(5, '0')}#{digito_agencia}#{conta_corrente.rjust(12, '0')}#{digito_conta} "
         end
 
         def complemento_header
@@ -193,12 +203,6 @@ module Brcobranca
           segmento_r << '0'                                             # Aviso débito automático              1
           segmento_r << ''.rjust(9, ' ')                                # Uso FEBRABAN                         9
           segmento_r
-        end
-
-        def data_multa(pagamento)
-          return ''.rjust(8, '0') if pagamento.codigo_multa == '0'
-
-          pagamento.data_vencimento.strftime('%d%m%Y')
         end
 
         # Retorna o nosso numero

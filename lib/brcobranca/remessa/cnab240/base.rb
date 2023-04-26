@@ -116,7 +116,7 @@ module Brcobranca
           header_lote << Brcobranca::Util::Empresa.new(documento_cedente, false).tipo # tipo de inscricao       1
           header_lote << documento_cedente.to_s.rjust(15, '0')  # inscricao cedente       15
           header_lote << convenio_lote                          # codigo do convenio      20
-          header_lote << info_conta                             # informacoes conta       20
+          header_lote << info_conta_lote                        # informacoes conta       20
           header_lote << empresa_mae.format_size(30)            # nome empresa            30
           header_lote << mensagem_1.to_s.format_size(40)        # 1a mensagem             40
           header_lote << mensagem_2.to_s.format_size(40)        # 2a mensagem             40
@@ -446,6 +446,11 @@ module Brcobranca
         def info_conta
           raise Brcobranca::NaoImplementado,
                 'Sobreescreva este método na classe referente ao banco que você esta criando'
+        end
+
+        # alias info_conta_lote info_conta
+        def info_conta_lote
+          info_conta
         end
 
         # Codigo do convenio
