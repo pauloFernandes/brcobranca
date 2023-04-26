@@ -478,11 +478,19 @@ module Brcobranca
         def data_multa(pagamento)
           return ''.rjust(8, '0') if pagamento.codigo_multa == '0'
 
+          if pagamento.data_multa.present?
+            return pagamento.data_multa.strftime('%d%m%Y')
+          end
+
           pagamento.data_vencimento.strftime('%d%m%Y')
         end
 
         def data_mora(pagamento)
           return ''.rjust(8, '0') unless %w[1 2].include? pagamento.tipo_mora
+          
+          if pagamento.data_mora.present?
+            return pagamento.data_mora.strftime('%d%m%Y')
+          end
 
           pagamento.data_vencimento.strftime('%d%m%Y')
         end
