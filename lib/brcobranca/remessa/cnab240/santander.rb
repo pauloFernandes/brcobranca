@@ -219,6 +219,14 @@ module Brcobranca
           "#{cc}#{ccdv}#{cc}#{ccdv}#{''.rjust(2, ' ')}#{nosso_numero}#{nosso_numero_dv}"
         end
 
+        def valor_mora(pagamento)
+          if pagamento.tipo_mora.to_s == '2'
+            return format('%.5f', pagamento.valor_mora).delete('.').rjust(15, '0')
+          end
+          
+          pagamento.formata_valor_mora(15)
+        end
+
         # Monta o registro segmento R do arquivo
         #
         # @param pagamento [Brcobranca::Remessa::Pagamento]

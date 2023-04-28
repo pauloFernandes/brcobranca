@@ -166,7 +166,7 @@ module Brcobranca
           segmento_p << pagamento.data_emissao.strftime('%d%m%Y')       # data de emissao titulo                8
           segmento_p << pagamento.tipo_mora                             # cod. do mora                          1
           segmento_p << data_mora(pagamento)                            # data mora                             8
-          segmento_p << pagamento.formata_valor_mora(15)                # valor mora                            15
+          segmento_p << valor_mora(pagamento)                           # valor mora                            15
           segmento_p << codigo_desconto(pagamento)                      # cod. do desconto                      1
           segmento_p << pagamento.formata_data_desconto('%d%m%Y')       # data desconto                         8
           segmento_p << pagamento.formata_valor_desconto(15)            # valor desconto                        15
@@ -498,6 +498,10 @@ module Brcobranca
           end
 
           pagamento.data_vencimento.strftime('%d%m%Y')
+        end
+
+        def valor_mora(pagamento)
+          pagamento.formata_valor_mora(15)
         end
 
         def codigo_desconto(pagamento)
