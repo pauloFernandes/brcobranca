@@ -4,7 +4,7 @@ module Brcobranca
   module Remessa
     module Cnab240
       class Sicoob < Brcobranca::Remessa::Cnab240::Base
-        attr_accessor :modalidade_carteira, :tipo_formulario, :parcela, :posto
+        attr_accessor :modalidade_carteira, :tipo_formulario, :parcela, :posto, :identificacao_titulo
 
         # identificacao da emissao do boleto (attr na classe base)
         #   opcoes:
@@ -226,6 +226,15 @@ module Brcobranca
 
         def dias_baixa(_pagamento)
           ''.rjust(3, ' ')
+        end
+
+        def identificacao_titulo_empresa(pagamento)
+          pagamento.identificacao_titulo
+          # 25 posicoes.
+          # 8 espaços?
+          # inscricao (lpad 0 de 8)
+          # '09/2023' referencia
+          # 10 espaços vazios
         end
       end
     end

@@ -215,8 +215,7 @@ module Brcobranca
           cc = conta_corrente.rjust(9, '0')
           ccdv = digito_conta
           nosso_numero = pagamento.nosso_numero.rjust(12, '0')
-          nosso_numero_dv = nosso_numero.modulo11(mapeamento: { 10 => '1' }).to_s
-          "#{cc}#{ccdv}#{cc}#{ccdv}#{''.rjust(2, ' ')}#{nosso_numero}#{nosso_numero_dv}"
+          "#{cc}#{ccdv}#{cc}#{ccdv}#{''.rjust(2, ' ')}#{nosso_numero}"
         end
 
         def valor_mora(pagamento)

@@ -93,6 +93,8 @@ module Brcobranca
       attr_accessor :dias_baixa
       # <b>OPCIONAL</b>: Número da Parcela
       attr_accessor :parcela
+      # <b>OPCIONAL</b>: Identificação do títiulo
+      attr_accessor :identificacao_titulo
 
       validates_presence_of :nosso_numero, :data_vencimento, :valor,
                             :documento_sacado, :nome_sacado, :endereco_sacado,
@@ -133,6 +135,7 @@ module Brcobranca
           cod_primeira_instrucao: '00',
           cod_segunda_instrucao: '00',
           prazo_instrucao: '03',
+          identificacao_titulo: ''
         }
 
         campos = padrao.merge!(campos)
