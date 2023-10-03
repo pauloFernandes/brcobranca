@@ -149,6 +149,8 @@ module Brcobranca
           doc.define_tags do
             tag :grande, size: 13
             tag :media, size: 10
+            tag :menor, size: 8
+            tag :menor2, name: "Helvetica-Bold", size: 5
           end
         end
 
@@ -288,17 +290,17 @@ module Brcobranca
 
           # Instruções
           doc.moveto x: colunas[2], y: linhas[5]
-          doc.show boleto.instrucao1
+          doc.show boleto.instrucao1, tag: :menor2
           doc.moveto x: colunas[2], y: linhas[6]
-          doc.show boleto.instrucao2
+          doc.show boleto.instrucao2, tag: :menor2
           doc.moveto x: colunas[2], y: linhas[7]
-          doc.show boleto.instrucao3
+          doc.show boleto.instrucao3, tag: :menor2
           doc.moveto x: colunas[2], y: linhas[8]
-          doc.show boleto.instrucao4
+          doc.show boleto.instrucao4, tag: :menor2
           doc.moveto x: colunas[2], y: linhas[9]
-          doc.show boleto.instrucao5
+          doc.show boleto.instrucao5, tag: :menor2
           doc.moveto x: colunas[2], y: linhas[10]
-          doc.show boleto.instrucao6
+          doc.show boleto.instrucao6, tag: :menor2
 
           # Sacado
           doc.moveto x: colunas[2], y: linhas[11]
