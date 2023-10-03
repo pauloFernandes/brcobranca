@@ -6,8 +6,6 @@ source 'https://rubygems.org'
 gemspec
 
 group :development do
-  gem 'faraday-retry'
-  gem 'github_changelog_generator'
   gem 'pry'
   gem 'rubocop'
   gem 'rubocop-packaging'
@@ -17,6 +15,7 @@ group :development do
 end
 
 group :test do
+  gem 'code-scanning-rubocop'
   gem 'json'
   gem 'rake'
   gem 'rspec'
