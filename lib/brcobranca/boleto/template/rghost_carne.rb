@@ -44,6 +44,10 @@ module Brcobranca
           modelo_carne_multipage(boletos, options)
         end
 
+        def lote(boletos, options = {})
+          modelo_carne_multipage(boletos, options)
+        end
+
         #  Cria o métodos dinâmicos (to_pdf, to_gif e etc) com todos os fomátos válidos.
         #
         # @return [Stream]
