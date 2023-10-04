@@ -81,6 +81,12 @@ module Brcobranca
       attr_accessor :sacado
       # <b>OPCIONAL</b>: Endereco do pagador
       attr_accessor :sacado_endereco
+      # <b>OPCIONAL</b>: CEP do pagador
+      attr_accessor :cep_sacado
+      # <b>OPCIONAL</b>: Cidade do pagador
+      attr_accessor :cidade_sacado
+      # <b>OPCIONAL</b>: UF do pagador
+      attr_accessor :uf_sacado
       # <b>REQUERIDO</b>: Documento do pagador
       attr_accessor :sacado_documento
       # <b>OPCIONAL</b>: Nome do avalista

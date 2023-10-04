@@ -154,6 +154,25 @@ module Brcobranca
           end
         end
 
+        # diminui nomes maiores do que 20 caracteres
+        def format_name(name)
+          if name.length > 20
+            name_parts = name.split(' ')
+        
+            name_formatted = name_parts.map.with_index do |part, index|
+              if index == 0 || index == name_parts.length - 1 || part.length < 4
+                part             
+              else
+                "#{part[0]}."
+              end
+            end.join(' ')
+        
+            return name_formatted
+          else
+            return name
+          end
+        end
+
         # define as colunas do documento, conforme margem lateral esquerda
         def calc_colunas(margin_left)
           colunas = [0.1, 3.4, 4.5, 7.1, 7.8, 8.5, 9.1, 9.7, 11, 12.4, 13.3, 15]
@@ -209,7 +228,7 @@ module Brcobranca
 
           # sacado
           doc.moveto x: colunas[0], y: linhas[13]
-          doc.show boleto.sacado.to_s
+          doc.show format_name(boleto.sacado.to_s), tag: :menor2
         end
 
         # aplica dados do lado direito
@@ -235,7 +254,7 @@ module Brcobranca
 
           # cedente
           doc.moveto x: colunas[2], y: linhas[2]
-          doc.show boleto.cedente
+          doc.show "#{boleto.cedente} - #{boleto.documento_cedente.formata_documento}"
 
           # agencia/codigo cedente
           doc.moveto x: colunas[11], y: linhas[2]
@@ -321,7 +340,9 @@ module Brcobranca
 
           # Sacado endereço
           doc.moveto x: colunas[2], y: linhas[12]
-          doc.show boleto.sacado_endereco.to_s
+          if boleto.sacado_endereco && boleto.cep_sacado && boleto.cidade_sacado && boleto.uf_sacado
+          doc.show "#{boleto.sacado_endereco} - #{boleto.cep_sacado.formata_documento} - #{boleto.cidade_sacado}/#{boleto.uf_sacado}"
+          end
 
           # codigo de barras
           # Gerando codigo de barra com rghost_barcode
