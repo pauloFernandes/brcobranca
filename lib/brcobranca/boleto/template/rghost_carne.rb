@@ -302,6 +302,17 @@ module Brcobranca
           doc.moveto x: colunas[2], y: linhas[10]
           doc.show boleto.instrucao6, tag: :menor2
 
+          # Gerando QRCode a partir de um emv
+          if boleto.emv
+            doc.barcode_qrcode(boleto.emv, width: '2,5 cm',
+                                          height: '2,5 cm',
+                                          eclevel: 'H',
+                                          x: (colunas[8] + 1.2),
+                                          y: (linhas[10] + 0.3))
+            doc.moveto x: (colunas[8] + 1.2), y: linhas[10]
+            doc.show 'Pague com PIX'          
+          end
+
           # Sacado
           doc.moveto x: colunas[2], y: linhas[11]
           if boleto.sacado && boleto.sacado_documento
