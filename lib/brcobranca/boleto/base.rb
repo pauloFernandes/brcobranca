@@ -17,6 +17,8 @@ module Brcobranca
       # Validações
       include Brcobranca::Validations
 
+      # <b>REQUERIDO</b>: Código do banco emissor
+      attr_accessor :codigo_banco
       # <b>REQUERIDO</b>: Número do convênio/contrato do cliente junto ao banco emissor
       attr_accessor :convenio
       # <b>REQUERIDO</b>: Tipo de moeda utilizada (Real(R$) e igual a 9)
