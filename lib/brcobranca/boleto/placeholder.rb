@@ -2,7 +2,7 @@
 
 module Brcobranca
   module Boleto
-    class Placeholder < Brcobranca::Boleto::Base
+    class Placeholder < Base
       def initialize(campos = {})
         campos = { carteira: '999' }.merge!(campos)
         super(campos)
