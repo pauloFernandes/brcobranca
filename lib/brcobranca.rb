@@ -102,6 +102,7 @@ module Brcobranca
     autoload :BancoBrasil,   'brcobranca/boleto/banco_brasil'
     autoload :BancoBrasilia, 'brcobranca/boleto/banco_brasilia'
     autoload :Itau,          'brcobranca/boleto/itau'
+    autoload :Placeholder,   'brcobranca/boleto/placeholder'
     autoload :Hsbc,          'brcobranca/boleto/hsbc'
     autoload :Bradesco,      'brcobranca/boleto/bradesco'
     autoload :Caixa,         'brcobranca/boleto/caixa'
