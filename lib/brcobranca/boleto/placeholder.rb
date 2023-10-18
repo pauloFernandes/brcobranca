@@ -12,6 +12,10 @@ module Brcobranca
         ''
       end
 
+      def banco_dv
+        ''
+      end
+
       def logotipo
         nil
       end
