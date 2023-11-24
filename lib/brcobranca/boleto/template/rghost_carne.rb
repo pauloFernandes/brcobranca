@@ -103,8 +103,8 @@ module Brcobranca
 
           max_per_page = 3
           curr_page_position = 0
-          heigth_template = 9 # altura do template é de 9 cm
-          initial_margin_bottom = 1.4 # margin inicial abaixo
+          heigth_template = 9.66 # altura do template é de 9 cm
+          initial_margin_bottom = 0.34 # margin inicial abaixo
 
           modelo_carne_define_tags(doc)
 
@@ -348,10 +348,21 @@ module Brcobranca
           doc.show "#{boleto.sacado_endereco} - #{boleto.cep_sacado.formata_documento} - #{boleto.cidade_sacado}/#{boleto.uf_sacado}"
           end
 
+          if boleto.sequencial_talonadora
+            doc.barcode_code39ext(
+              boleto.sequencial_talonadora,
+              rotate: '90deg',
+              width: '4.84 cm',
+              height: '0.66 cm',
+              x: (colunas[0] - 0.3),
+              y: linhas[9] + 0.5
+            )
+          end
+
           # codigo de barras
           # Gerando codigo de barra com rghost_barcode
           if boleto.codigo_barras
-            doc.barcode_interleaved2of5(boleto.codigo_barras, width: '10.3 cm', height: '1.2 cm', x: colunas[2],
+            doc.barcode_interleaved2of5(boleto.codigo_barras, width: '10.3 cm', height: '1 cm', x: colunas[2],
                                                               y: linhas[14])
           end
         end
@@ -359,3 +370,4 @@ module Brcobranca
     end
   end
 end
+
