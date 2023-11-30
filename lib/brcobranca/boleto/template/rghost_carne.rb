@@ -103,8 +103,8 @@ module Brcobranca
 
           max_per_page = 3
           curr_page_position = 0
-          heigth_template = 9.66 # altura do template é de 9 cm
-          initial_margin_bottom = 0.34 # margin inicial abaixo
+          heigth_template = 9.6774
+          initial_margin_bottom = 0.345
 
           modelo_carne_define_tags(doc)
 
@@ -362,8 +362,8 @@ module Brcobranca
           # codigo de barras
           # Gerando codigo de barra com rghost_barcode
           if boleto.codigo_barras
-            doc.barcode_interleaved2of5(boleto.codigo_barras, width: '10.3 cm', height: '1 cm', x: colunas[2],
-                                                              y: linhas[14])
+            doc.barcode_interleaved2of5(boleto.codigo_barras, width: '10.3 cm', height: '0.93 cm', x: colunas[2],
+                                                              y: linhas[14] + 0.32)
           end
         end
       end
