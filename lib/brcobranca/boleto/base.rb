@@ -79,6 +79,8 @@ module Brcobranca
       attr_accessor :local_pagamento
       # <b>REQUERIDO</b>: Informa se o banco deve aceitar o boleto após o vencimento ou não( S ou N, quase sempre S)
       attr_accessor :aceite
+      # <b>REQUERIDO</b>: Inscricao do pagador
+      attr_accessor :sacado_inscricao
       # <b>REQUERIDO</b>: Nome do pagador
       attr_accessor :sacado
       # <b>OPCIONAL</b>: Endereco do pagador

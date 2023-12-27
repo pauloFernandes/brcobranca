@@ -151,6 +151,7 @@ module Brcobranca
             tag :media, size: 10
             tag :menor, size: 8
             tag :menor2, name: "Helvetica-Bold", size: 5
+            tag :menor3, size: 5
           end
         end
 
@@ -210,18 +211,36 @@ module Brcobranca
 
           # vencimento
           doc.moveto x: colunas[0], y: linhas[1]
-          doc.show boleto.data_vencimento.to_s_br
+          doc.show "#{boleto.data_vencimento.to_s_br}       #{boleto.agencia_conta_boleto}"
 
-          # agencia/codigo cedente
-          doc.moveto x: colunas[0], y: linhas[2]
-          doc.show boleto.agencia_conta_boleto
+          # cedente
+          dados_cedente = boleto.cedente.scan(/.{1,30}/)
+          dados_cedente << boleto.documento_cedente.formata_documento
+          salto_offset = 0.2
+          posicao = linhas[2] 
+          dados_cedente.each do |dado|
+            doc.moveto x: colunas[0], y: posicao
+            doc.show dado.strip, tag: :menor3
+            posicao -= salto_offset
+          end
+
+          # cedente endereco
+          posicao = linhas[4] 
+          dados_endereco_cedente = boleto.cedente_endereco.scan(/.{1,40}/)
+          dados_endereco_cedente.each do |dado|
+            doc.moveto x: colunas[0], y: posicao
+            doc.show dado.strip, tag: :menor3
+            posicao -= salto_offset
+          end
+       
 
           # nosso numero
-          doc.moveto x: colunas[0], y: linhas[3]
-          doc.show boleto.nosso_numero_boleto
+          doc.moveto x: colunas[0], y: linhas[10] - 0.22
+          doc.show boleto.nosso_numero
 
           # valor do documento
-          doc.moveto x: colunas[0], y: linhas[4]
+          doc.moveto x: colunas[0], y: linhas[6] - 0.1
+
           doc.show boleto.valor_documento.to_currency
 
           # numero documento
@@ -229,8 +248,20 @@ module Brcobranca
           doc.show boleto.documento_numero
 
           # sacado
-          doc.moveto x: colunas[0], y: linhas[13]
-          doc.show format_name(boleto.sacado.to_s), tag: :menor2
+          dados_sacado = [
+            "Inscrição: #{boleto.sacado_inscricao.to_s}",
+            format_name(boleto.sacado.to_s),
+            boleto.sacado_documento.formata_documento,
+          ]
+          dados_sacado += "#{boleto.sacado_endereco} - #{boleto.cep_sacado.formata_documento} - #{boleto.cidade_sacado}/#{boleto.uf_sacado}".scan(/.{1,30}/)
+
+          offset = 0.25
+          posicao = linhas[13]
+          dados_sacado.each do |dado|
+            doc.moveto x: colunas[0], y: posicao
+            doc.show dado, tag: :menor3
+            posicao -= offset
+          end
         end
 
         # aplica dados do lado direito
@@ -286,7 +317,7 @@ module Brcobranca
 
           # nosso numero
           doc.moveto x: colunas[11], y: linhas[3]
-          doc.show boleto.nosso_numero_boleto
+          doc.show boleto.nosso_numero
 
           # uso do banco
           ## nada...
@@ -312,18 +343,29 @@ module Brcobranca
           doc.show boleto.valor_documento.to_currency
 
           # Instruções
-          doc.moveto x: colunas[2], y: linhas[5]
+          doc.moveto x: colunas[2], y: linhas[5] + 0.15
           doc.show boleto.instrucao1, tag: :menor2
-          doc.moveto x: colunas[2], y: linhas[6]
+          doc.moveto x: colunas[2], y: linhas[6] + 0.3
           doc.show boleto.instrucao2, tag: :menor2
-          doc.moveto x: colunas[2], y: linhas[7]
+          doc.moveto x: colunas[2], y: linhas[7] + 0.45
           doc.show boleto.instrucao3, tag: :menor2
-          doc.moveto x: colunas[2], y: linhas[8]
+          doc.moveto x: colunas[2], y: linhas[8] + 0.6
           doc.show boleto.instrucao4, tag: :menor2
-          doc.moveto x: colunas[2], y: linhas[9]
+          doc.moveto x: colunas[2], y: linhas[9] + 0.75
           doc.show boleto.instrucao5, tag: :menor2
-          doc.moveto x: colunas[2], y: linhas[10]
+          doc.moveto x: colunas[2], y: linhas[10] + 1
           doc.show boleto.instrucao6, tag: :menor2
+
+
+          if boleto.emv and boleto.instrucao7.kind_of?(Array)
+            posicao = linhas[12] + 2
+            salto_offset = 0.2
+            boleto.instrucao7.each do |instrucao|
+              doc.moveto x: colunas[2], y: posicao
+              doc.show instrucao, tag: :menor2
+              posicao -= salto_offset  
+            end
+          end
 
           # Gerando QRCode a partir de um emv
           if boleto.emv
