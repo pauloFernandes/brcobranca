@@ -381,7 +381,7 @@ module Brcobranca
           # Sacado
           doc.moveto x: colunas[2], y: linhas[11]
           if boleto.sacado && boleto.sacado_documento
-            doc.show "#{boleto.sacado} - #{boleto.sacado_documento.formata_documento}"
+            doc.show "#{boleto.sacado} - #{boleto.sacado_documento.formata_documento} - #{boleto.sacado_inscricao.to_s}"
           end
 
           # Sacado endereço
