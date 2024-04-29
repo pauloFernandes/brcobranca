@@ -103,8 +103,8 @@ module Brcobranca
 
           max_per_page = 3
           curr_page_position = 0
-          heigth_template = 9.6774
-          initial_margin_bottom = 0.345
+          heigth_template = 9.9
+          initial_margin_bottom = 0.5
 
           modelo_carne_define_tags(doc)
 
