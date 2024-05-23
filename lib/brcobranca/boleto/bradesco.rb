@@ -79,7 +79,7 @@ module Brcobranca
       # @example
       #  boleto.agencia_conta_boleto #=> "0548-7 / 00001448-6"
       def agencia_conta_boleto
-        "#{agencia}-#{agencia_dv} / #{conta_corrente}-#{conta_corrente_dv}"
+        "#{agencia}-#{agencia_dv} / #{conta_corrente[-4, 4]}-#{conta_corrente_dv}"
       end
 
       # Segunda parte do código de barras.
