@@ -7,9 +7,7 @@ module Brcobranca
         # Código de Transmissão
         # Consultar seu gerente para pegar esse código. Geralmente está no e-mail enviado pelo banco.
         attr_accessor :codigo_transmissao
-        attr_accessor :mensagem
-
-        attr_accessor :codigo_carteira
+        attr_accessor :mensagem, :codigo_carteira
 
         validates_presence_of :documento_cedente, :codigo_transmissao, message: 'não pode estar em branco.'
         validates_presence_of :digito_conta, message: 'não pode estar em branco.', if: :conta_padrao_novo?
@@ -25,9 +23,9 @@ module Brcobranca
             tipo_documento: '1',
             emissao_boleto: ' ',
             distribuicao_boleto: ' ',
-            especie_titulo: '02',
+            especie_titulo: '02'
           }.merge!(campos)
-          super(campos)
+          super
         end
 
         # Monta o registro header do arquivo
@@ -40,7 +38,7 @@ module Brcobranca
           header_arquivo << '0000'                              # lote do servico               4
           header_arquivo << '0'                                 # tipo de registro              1
           header_arquivo << ''.rjust(8, ' ')                    # uso exclusivo FEBRABAN        8
-          header_arquivo << Brcobranca::Util::Empresa.new(documento_cedente, false).tipo        # tipo inscricao               1
+          header_arquivo << Brcobranca::Util::Empresa.new(documento_cedente, false).tipo # tipo inscricao               1
           header_arquivo << documento_cedente.to_s.rjust(15, '0') # numero de inscricao         15
           header_arquivo << codigo_transmissao                  # Código de Transmissão         15
           header_arquivo << ''.rjust(25, ' ')                   # Reservado (uso Banco)         25
@@ -211,7 +209,7 @@ module Brcobranca
           # digito conta                                        1
           # reservado                                           8               brancos
           # nosso numero                                        13
-          
+
           cc = conta_corrente.rjust(9, '0')
           ccdv = digito_conta
           nosso_numero = pagamento.nosso_numero.rjust(12, '0')
@@ -219,10 +217,8 @@ module Brcobranca
         end
 
         def valor_mora(pagamento)
-          if pagamento.tipo_mora.to_s == '2'
-            return format('%.5f', pagamento.valor_mora).delete('.').rjust(15, '0')
-          end
-          
+          return format('%.5f', pagamento.valor_mora).delete('.').rjust(15, '0') if pagamento.tipo_mora.to_s == '2'
+
           pagamento.formata_valor_mora(15)
         end
 

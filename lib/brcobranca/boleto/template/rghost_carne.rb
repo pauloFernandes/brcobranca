@@ -86,8 +86,8 @@ module Brcobranca
           modelo_carne_build_data_right(doc, boleto, colunas, linhas)
 
           # Gerando stream
-          formato = (options.delete(:formato) || Brcobranca.configuration.formato)
-          resolucao = (options.delete(:resolucao) || Brcobranca.configuration.resolucao)
+          formato = options.delete(:formato) || Brcobranca.configuration.formato
+          resolucao = options.delete(:resolucao) || Brcobranca.configuration.resolucao
           doc.render_stream(formato.to_sym, resolution: resolucao)
         end
 
@@ -130,8 +130,8 @@ module Brcobranca
           end
 
           # Gerando stream
-          formato = (options.delete(:formato) || Brcobranca.configuration.formato)
-          resolucao = (options.delete(:resolucao) || Brcobranca.configuration.resolucao)
+          formato = options.delete(:formato) || Brcobranca.configuration.formato
+          resolucao = options.delete(:resolucao) || Brcobranca.configuration.resolucao
 
           doc.render_stream(formato.to_sym, resolution: resolucao)
         end

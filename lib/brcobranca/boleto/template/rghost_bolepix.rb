@@ -88,8 +88,8 @@ module Brcobranca
           end
 
           # Gerando stream
-          formato = (options.delete(:formato) || Brcobranca.configuration.formato)
-          resolucao = (options.delete(:resolucao) || Brcobranca.configuration.resolucao)
+          formato = options.delete(:formato) || Brcobranca.configuration.formato
+          resolucao = options.delete(:resolucao) || Brcobranca.configuration.resolucao
           doc.render_stream(formato.to_sym, resolution: resolucao)
         end
 
@@ -155,7 +155,10 @@ module Brcobranca
           move_more(doc, 5, 0)
           doc.show boleto.valor_documento.to_currency
 
-          move_more(doc, -15, -1.3)
+          move_more(doc, -15.8, -0.75)
+          doc.show boleto.descontos_e_abatimentos&.to_currency
+
+          move_more(doc, 0.8, -0.55)
           doc.show "#{boleto.sacado} - #{boleto.sacado_documento.formata_documento}"
 
           move_more(doc, 0, -0.3)
@@ -234,6 +237,10 @@ module Brcobranca
           move_more(doc, 10.1, 0)
           doc.show boleto.valor_documento.to_currency
 
+          move_more(doc, 0, -0.8)
+          doc.show boleto.descontos_e_abatimentos&.to_currency
+
+          move_more(doc, 0, 0.8)
           if boleto.instrucoes
             doc.text_area boleto.instrucoes, width: '14 cm',
                                              text_align: :left, x: "#{@x -= 15.8} cm",

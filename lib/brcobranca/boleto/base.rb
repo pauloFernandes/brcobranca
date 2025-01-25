@@ -103,6 +103,8 @@ module Brcobranca
       attr_accessor :emv
       # <b>OPCIONAL</b>: Código sequencial para impressora talonadora.
       attr_accessor :sequencial_talonadora
+      # <b>OPCIONAL</b>: Descontos e abatimentos
+      attr_accessor :descontos_e_abatimentos
 
       # Validações
       validates_presence_of :agencia, :conta_corrente, :moeda, :especie_documento, :especie, :aceite, :nosso_numero,
@@ -127,7 +129,7 @@ module Brcobranca
 
         campos = padrao.merge!(campos)
         campos.each do |campo, valor|
-          send "#{campo}=", valor
+          send :"#{campo}=", valor
         end
 
         yield self if block_given?

@@ -18,7 +18,7 @@ module Brcobranca
         # Nova instancia do Itau
         def initialize(campos = {})
           campos = { aceite: 'N' }.merge!(campos)
-          super(campos)
+          super
         end
 
         def agencia=(valor)
@@ -114,8 +114,8 @@ module Brcobranca
           detalhe << pagamento.especie_titulo                               # especie  do titulo                    X[02]
           detalhe << aceite                                                 # aceite (A/N)                          X[01]
           detalhe << pagamento.data_emissao.strftime('%d%m%y')              # data de emissao                       9[06]
-          detalhe << pagamento.cod_primeira_instrucao                       # 1a instrucao - deixar zero            X[02]
-          detalhe << pagamento.cod_segunda_instrucao                        # 2a instrucao - deixar zero            X[02]
+          detalhe << pagamento.cod_primeira_instrucao.to_s.rjust(2, '0')    # 1a instrucao - deixar zero            X[02]
+          detalhe << pagamento.cod_segunda_instrucao.to_s.rjust(2, '0')     # 2a instrucao - deixar zero            X[02]
           detalhe << pagamento.formata_valor_mora                           # valor mora ao dia                     9[13]
           detalhe << pagamento.formata_data_desconto                        # data limite para desconto             9[06]
           detalhe << pagamento.formata_valor_desconto                       # valor do desconto                     9[13]
@@ -140,10 +140,8 @@ module Brcobranca
         end
 
         def prazo_instrucao(pagamento)
-          if pagamento.cod_primeira_instrucao == '09'
-            return pagamento.dias_protesto.rjust(2, '0')
-          end
-          
+          return pagamento.dias_protesto.rjust(2, '0') if pagamento.cod_primeira_instrucao == '09'
+
           pagamento.prazo_instrucao.rjust(2, '0')
         end
 
